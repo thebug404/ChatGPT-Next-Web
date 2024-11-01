@@ -499,6 +499,9 @@ const es: PartialLocaleType = {
     Clear: "Contexto borrado",
     Revert: "Restaurar contexto",
   },
+  Discovery: {
+    Name: "Exploración",
+  },
   Plugin: {
     Name: "Complemento",
   },
