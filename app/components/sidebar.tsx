@@ -7,9 +7,7 @@ import SettingsIcon from "../icons/settings.svg";
 import BrainyIcon from "../icons/brainy.svg";
 import AddIcon from "../icons/add.svg";
 import DeleteIcon from "../icons/delete.svg";
-import MaskIcon from "../icons/mask.svg";
 import DragIcon from "../icons/drag.svg";
-import DiscoveryIcon from "../icons/discovery.svg";
 
 import Locale from "../locales";
 
@@ -227,7 +225,7 @@ export function SideBar(props: { className?: string }) {
         logo={<BrainyIcon />}
       >
         <div className={styles["sidebar-header-bar"]}>
-          <IconButton
+          {/* <IconButton
             icon={<MaskIcon />}
             text={shouldNarrow ? undefined : Locale.Mask.Name}
             className={styles["sidebar-bar-button"]}
@@ -239,14 +237,14 @@ export function SideBar(props: { className?: string }) {
               }
             }}
             shadow
-          />
-          <IconButton
+          /> */}
+          {/* <IconButton
             icon={<DiscoveryIcon />}
             text={shouldNarrow ? undefined : Locale.Discovery.Name}
             className={styles["sidebar-bar-button"]}
             onClick={() => setShowPluginSelector(true)}
             shadow
-          />
+          /> */}
         </div>
         {showPluginSelector && (
           <Selector
