@@ -1,6 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  font-family: "Nunito Sans", sans-serif;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

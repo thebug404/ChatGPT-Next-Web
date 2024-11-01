@@ -9,7 +9,6 @@ import React, {
   RefObject,
 } from "react";
 
-import SendWhiteIcon from "../icons/send-white.svg";
 import BrainIcon from "../icons/brain.svg";
 import RenameIcon from "../icons/rename.svg";
 import ExportIcon from "../icons/share.svg";
@@ -87,6 +86,7 @@ import { IconButton } from "./button";
 import styles from "./chat.module.scss";
 
 import {
+  // Card,
   List,
   ListItem,
   Modal,
@@ -119,6 +119,11 @@ const localStorage = safeLocalStorage();
 import { ClientApi } from "../client/api";
 import { createTTSPlayer } from "../utils/audio";
 import { MsEdgeTTS, OUTPUT_FORMAT } from "../utils/ms_edge_tts";
+import { Button } from "@/components/ui/button";
+import { Send } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
 
 const ttsPlayer = createTTSPlayer();
 
@@ -384,8 +389,10 @@ export function ChatAction(props: {
   }
 
   return (
-    <div
-      className={`${styles["chat-input-action"]} clickable`}
+    <Badge
+      // className={`${styles["chat-input-action"]} clickable`}
+      variant="secondary"
+      className="cursor-pointer"
       onClick={() => {
         props.onClick();
         setTimeout(updateWidth, 1);
@@ -402,10 +409,10 @@ export function ChatAction(props: {
       <div ref={iconRef} className={styles["icon"]}>
         {props.icon}
       </div>
-      <div className={styles["text"]} ref={textRef}>
+      <div className="ms-2" ref={textRef}>
         {props.text}
       </div>
-    </div>
+    </Badge>
   );
 }
 
@@ -547,7 +554,7 @@ export function ChatActions(props: {
   }, [chatStore, currentModel, models]);
 
   return (
-    <div className={styles["chat-input-actions"]}>
+    <div className={`space-x-1 space-y-1${styles["chat-input-actions"]}`}>
       {couldStop && (
         <ChatAction
           onClick={stopAll}
@@ -1570,7 +1577,10 @@ function _Chat() {
   }, [messages, chatStore, navigate]);
 
   return (
-    <div className={styles.chat} key={session.id}>
+    <Card
+      className="flex flex-col h-full relative border-0 rounded-none bg-primary-foreground"
+      key={session.id}
+    >
       <div className="window-header" data-tauri-drag-region>
         {isMobileScreen && (
           <div className="window-actions">
@@ -1920,17 +1930,18 @@ function _Chat() {
           setUserInput={setUserInput}
         />
         <label
-          className={`${styles["chat-input-panel-inner"]} ${
+          className={`cursor-text flex flex-1 rounded-md mt-2 bg-card resize-none outline-none ${
             attachImages.length != 0
               ? styles["chat-input-panel-inner-attach"]
               : ""
           }`}
           htmlFor="chat-input"
         >
-          <textarea
+          <Textarea
             id="chat-input"
             ref={inputRef}
-            className={styles["chat-input"]}
+            // className={styles["chat-input"]}
+            className="border-0"
             placeholder={Locale.Chat.Input(submitKey)}
             onInput={(e) => onInput(e.currentTarget.value)}
             value={userInput}
@@ -1968,13 +1979,20 @@ function _Chat() {
               })}
             </div>
           )}
-          <IconButton
+          {/* <IconButton
             icon={<SendWhiteIcon />}
             text={Locale.Chat.Send}
             className={styles["chat-input-send"]}
             type="primary"
             onClick={() => doSubmit(userInput)}
-          />
+          /> */}
+          <Button
+            onClick={() => doSubmit(userInput)}
+            className="absolute bottom-8 right-8"
+          >
+            <Send size={24} />
+            <span className="ms-1 hidden sm:block">{Locale.Chat.Send}</span>
+          </Button>
         </label>
       </div>
 
@@ -1993,7 +2011,7 @@ function _Chat() {
       {showShortcutKeyModal && (
         <ShortcutKeyModal onClose={() => setShowShortcutKeyModal(false)} />
       )}
-    </div>
+    </Card>
   );
 }
 

@@ -26,6 +26,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { isIOS, useMobileScreen } from "../utils";
 import dynamic from "next/dynamic";
 import { showConfirm, Selector } from "./ui-lib";
+import { Card } from "@/components/ui/card";
 
 const ChatList = dynamic(async () => (await import("./chat-list")).ChatList, {
   loading: () => null,
@@ -136,8 +137,8 @@ export function SideBarContainer(props: {
   );
   const { children, className, onDragStart, shouldNarrow } = props;
   return (
-    <div
-      className={`${styles.sidebar} ${className} ${
+    <Card
+      className={`${styles.sidebar} ${className} border-0 rounded-none ${
         shouldNarrow && styles["narrow-sidebar"]
       }`}
       style={{
@@ -152,7 +153,7 @@ export function SideBarContainer(props: {
       >
         <DragIcon />
       </div>
-    </div>
+    </Card>
   );
 }
 
@@ -220,7 +221,7 @@ export function SideBar(props: { className?: string }) {
       {...props}
     >
       <SideBarHeader
-        title="BrainyChat"
+        title="Brainy"
         subTitle="Crea tu propio asistente inteligente."
         logo={<BrainyIcon />}
       >

@@ -36,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <meta name="config" content={JSON.stringify(getClientConfig())} />
         <meta
@@ -47,6 +47,16 @@ export default function RootLayout({
           rel="manifest"
           href="/site.webmanifest"
           crossOrigin="use-credentials"
+        ></link>
+        <link rel="preconnect" href="https://fonts.googleapis.com"></link>
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin=""
+        ></link>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap"
+          rel="stylesheet"
         ></link>
         <script src="/serviceWorkerRegister.js" defer></script>
       </head>

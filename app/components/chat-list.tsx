@@ -1,4 +1,4 @@
-import DeleteIcon from "../icons/delete.svg";
+// import DeleteIcon from "../icons/delete.svg";
 
 import styles from "./home.module.scss";
 import {
@@ -18,6 +18,9 @@ import { Mask } from "../store/mask";
 import { useRef, useEffect } from "react";
 import { showConfirm } from "./ui-lib";
 import { useMobileScreen } from "../utils";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { XCircle } from "lucide-react";
 
 export function ChatItem(props: {
   onClick?: () => void;
@@ -44,11 +47,11 @@ export function ChatItem(props: {
   return (
     <Draggable draggableId={`${props.id}`} index={props.index}>
       {(provided) => (
-        <div
-          className={`${styles["chat-item"]} ${
+        <Card
+          className={`border-0 hover:bg-primary-foreground my-2 ${
             props.selected &&
             (currentPath === Path.Chat || currentPath === Path.Home) &&
-            styles["chat-item-selected"]
+            "border-l-2 dark:border-white rounded-none"
           }`}
           onClick={props.onClick}
           ref={(ele) => {
@@ -61,41 +64,46 @@ export function ChatItem(props: {
             props.count,
           )}`}
         >
-          {props.narrow ? (
-            <div className={styles["chat-item-narrow"]}>
-              <div className={styles["chat-item-avatar"] + " no-dark"}>
-                <MaskAvatar
-                  avatar={props.mask.avatar}
-                  model={props.mask.modelConfig.model}
-                />
-              </div>
-              <div className={styles["chat-item-narrow-count"]}>
-                {props.count}
-              </div>
-            </div>
-          ) : (
-            <>
-              <div className={styles["chat-item-title"]}>{props.title}</div>
-              <div className={styles["chat-item-info"]}>
-                <div className={styles["chat-item-count"]}>
-                  {Locale.ChatItem.ChatItemCount(props.count)}
+          <CardContent className="relative p-4 py-2">
+            {props.narrow ? (
+              <div className={styles["chat-item-narrow"]}>
+                <div className={styles["chat-item-avatar"] + " no-dark"}>
+                  <MaskAvatar
+                    avatar={props.mask.avatar}
+                    model={props.mask.modelConfig.model}
+                  />
                 </div>
-                <div className={styles["chat-item-date"]}>{props.time}</div>
+                <div className={styles["chat-item-narrow-count"]}>
+                  {props.count}
+                </div>
               </div>
-            </>
-          )}
+            ) : (
+              <>
+                <div className={styles["chat-item-title"]}>{props.title}</div>
+                <div className={styles["chat-item-info"]}>
+                  <div className={styles["chat-item-count"]}>
+                    {Locale.ChatItem.ChatItemCount(props.count)}
+                  </div>
+                  <div className={styles["chat-item-date"]}>{props.time}</div>
+                </div>
+              </>
+            )}
 
-          <div
-            className={styles["chat-item-delete"]}
-            onClickCapture={(e) => {
-              props.onDelete?.();
-              e.preventDefault();
-              e.stopPropagation();
-            }}
-          >
-            <DeleteIcon />
-          </div>
-        </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              // className={styles["chat-item-delete"]}
+              className="absolute top-0 right-0 rounded-full"
+              onClickCapture={(e) => {
+                props.onDelete?.();
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+            >
+              <XCircle />
+            </Button>
+          </CardContent>
+        </Card>
       )}
     </Draggable>
   );
