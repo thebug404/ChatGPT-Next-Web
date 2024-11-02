@@ -10,8 +10,6 @@ import React, {
 } from "react";
 
 import BrainIcon from "../icons/brain.svg";
-import RenameIcon from "../icons/rename.svg";
-import ExportIcon from "../icons/share.svg";
 import ReturnIcon from "../icons/return.svg";
 import CopyIcon from "../icons/copy.svg";
 import SpeakIcon from "../icons/speak.svg";
@@ -20,8 +18,6 @@ import LoadingIcon from "../icons/three-dots.svg";
 import LoadingButtonIcon from "../icons/loading.svg";
 import PromptIcon from "../icons/prompt.svg";
 import MaskIcon from "../icons/mask.svg";
-import MaxIcon from "../icons/max.svg";
-import MinIcon from "../icons/min.svg";
 import ResetIcon from "../icons/reload.svg";
 import BreakIcon from "../icons/break.svg";
 import SettingsIcon from "../icons/chat-settings.svg";
@@ -44,7 +40,6 @@ import QualityIcon from "../icons/hd.svg";
 import StyleIcon from "../icons/palette.svg";
 import PluginIcon from "../icons/plugin.svg";
 import ShortcutkeyIcon from "../icons/shortcutkey.svg";
-import ReloadIcon from "../icons/reload.svg";
 
 import {
   ChatMessage,
@@ -120,7 +115,14 @@ import { ClientApi } from "../client/api";
 import { createTTSPlayer } from "../utils/audio";
 import { MsEdgeTTS, OUTPUT_FORMAT } from "../utils/ms_edge_tts";
 import { Button } from "@/components/ui/button";
-import { Send } from "lucide-react";
+import {
+  Maximize2,
+  Minimize2,
+  Pencil,
+  RefreshCcw,
+  Send,
+  Share2,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -1606,9 +1608,9 @@ function _Chat() {
             {Locale.Chat.SubTitle(session.messages.length)}
           </div>
         </div>
-        <div className="window-actions">
-          <div className="window-action-button">
-            <IconButton
+        <div className="window-actions space-x-1">
+          <div>
+            {/* <IconButton
               icon={<ReloadIcon />}
               bordered
               title={Locale.Chat.Actions.RefreshTitle}
@@ -1616,32 +1618,64 @@ function _Chat() {
                 showToast(Locale.Chat.Actions.RefreshToast);
                 chatStore.summarizeSession(true);
               }}
-            />
+            /> */}
+            <Button
+              variant="ghost"
+              size="icon"
+              title={Locale.Chat.Actions.RefreshTitle}
+              className="rounded-full"
+              onClick={() => {
+                showToast(Locale.Chat.Actions.RefreshToast);
+                chatStore.summarizeSession(true);
+              }}
+            >
+              <RefreshCcw />
+            </Button>
           </div>
           {!isMobileScreen && (
-            <div className="window-action-button">
-              <IconButton
+            <div>
+              {/* <IconButton
                 icon={<RenameIcon />}
                 bordered
                 title={Locale.Chat.EditMessage.Title}
                 aria={Locale.Chat.EditMessage.Title}
                 onClick={() => setIsEditingMessage(true)}
-              />
+              /> */}
+              <Button
+                variant="ghost"
+                size="icon"
+                title={Locale.Chat.EditMessage.Title}
+                className="rounded-full"
+                onClick={() => setIsEditingMessage(true)}
+              >
+                <Pencil />
+              </Button>
             </div>
           )}
-          <div className="window-action-button">
-            <IconButton
+          <div>
+            {/* <IconButton
               icon={<ExportIcon />}
               bordered
               title={Locale.Chat.Actions.Export}
               onClick={() => {
                 setShowExport(true);
               }}
-            />
+            /> */}
+            <Button
+              variant="ghost"
+              size="icon"
+              title={Locale.Chat.Actions.Export}
+              className="rounded-full"
+              onClick={() => {
+                setShowExport(true);
+              }}
+            >
+              <Share2 />
+            </Button>
           </div>
           {showMaxIcon && (
-            <div className="window-action-button">
-              <IconButton
+            <div>
+              {/* <IconButton
                 icon={config.tightBorder ? <MinIcon /> : <MaxIcon />}
                 bordered
                 title={Locale.Chat.Actions.FullScreen}
@@ -1651,7 +1685,21 @@ function _Chat() {
                     (config) => (config.tightBorder = !config.tightBorder),
                   );
                 }}
-              />
+              /> */}
+              <Button
+                variant="ghost"
+                size="icon"
+                title={Locale.Chat.Actions.FullScreen}
+                aria-label={Locale.Chat.Actions.FullScreen}
+                className="rounded-full"
+                onClick={() => {
+                  config.update(
+                    (config) => (config.tightBorder = !config.tightBorder),
+                  );
+                }}
+              >
+                {config.tightBorder ? <Minimize2 /> : <Maximize2 />}
+              </Button>
             </div>
           )}
         </div>
