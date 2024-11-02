@@ -4,12 +4,8 @@ import { ErrorBoundary } from "./error";
 import styles from "./mask.module.scss";
 
 import DownloadIcon from "../icons/download.svg";
-import UploadIcon from "../icons/upload.svg";
-import EditIcon from "../icons/edit.svg";
 import AddIcon from "../icons/add.svg";
-import CloseIcon from "../icons/close.svg";
 import DeleteIcon from "../icons/delete.svg";
-import EyeIcon from "../icons/eye.svg";
 import CopyIcon from "../icons/copy.svg";
 import DragIcon from "../icons/drag.svg";
 
@@ -55,6 +51,8 @@ import {
   OnDragEndResponder,
 } from "@hello-pangea/dnd";
 import { getMessageTextContent } from "../utils";
+import { Button } from "@/components/ui/button";
+import { Download, Eye, Pencil, Plus, Upload, X } from "lucide-react";
 
 // drag and drop helper function
 function reorder<T>(list: T[], startIndex: number, endIndex: number): T[] {
@@ -494,33 +492,44 @@ export function MaskPage() {
 
           <div className="window-actions">
             <div className="window-action-button">
-              <IconButton
+              {/* <IconButton
                 icon={<DownloadIcon />}
                 bordered
                 onClick={downloadAll}
                 text={Locale.UI.Export}
-              />
+              /> */}
+              <Button variant="ghost" onClick={downloadAll}>
+                <Download />
+                {Locale.UI.Export}
+              </Button>
             </div>
             <div className="window-action-button">
-              <IconButton
+              {/* <IconButton
                 icon={<UploadIcon />}
                 text={Locale.UI.Import}
                 bordered
                 onClick={() => importFromFile()}
-              />
+              /> */}
+              <Button variant="ghost" onClick={() => importFromFile()}>
+                <Upload />
+                {Locale.UI.Import}
+              </Button>
             </div>
             <div className="window-action-button">
-              <IconButton
+              {/* <IconButton
                 icon={<CloseIcon />}
                 bordered
                 onClick={() => navigate(-1)}
-              />
+              /> */}
+              <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+                <X />
+              </Button>
             </div>
           </div>
         </div>
 
         <div className={styles["mask-page-body"]}>
-          <div className={styles["mask-filter"]}>
+          <div className={`space-x-2 ${styles["mask-filter"]}`}>
             <input
               type="text"
               className={styles["search-bar"]}
@@ -543,14 +552,16 @@ export function MaskPage() {
               <option key="all" value={Locale.Settings.Lang.All}>
                 {Locale.Settings.Lang.All}
               </option>
-              {AllLangs.map((lang) => (
-                <option value={lang} key={lang}>
-                  {ALL_LANG_OPTIONS[lang]}
-                </option>
-              ))}
+              {AllLangs.filter((lang) => lang === "en" || lang === "es").map(
+                (lang) => (
+                  <option value={lang} key={lang}>
+                    {ALL_LANG_OPTIONS[lang]}
+                  </option>
+                ),
+              )}
             </Select>
 
-            <IconButton
+            {/* <IconButton
               className={styles["mask-create"]}
               icon={<AddIcon />}
               text={Locale.Mask.Page.Create}
@@ -559,7 +570,17 @@ export function MaskPage() {
                 const createdMask = maskStore.create();
                 setEditingMaskId(createdMask.id);
               }}
-            />
+            /> */}
+            <Button
+              size="sm"
+              onClick={() => {
+                const createdMask = maskStore.create();
+                setEditingMaskId(createdMask.id);
+              }}
+            >
+              <Plus />
+              {Locale.Mask.Page.Create}
+            </Button>
           </div>
 
           <div>
@@ -579,37 +600,76 @@ export function MaskPage() {
                   </div>
                 </div>
                 <div className={styles["mask-actions"]}>
-                  <IconButton
+                  {/* <IconButton
                     icon={<AddIcon />}
                     text={Locale.Mask.Item.Chat}
                     onClick={() => {
                       chatStore.newSession(m);
                       navigate(Path.Chat);
                     }}
-                  />
+                  /> */}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      chatStore.newSession(m);
+                      navigate(Path.Chat);
+                    }}
+                  >
+                    <Plus />
+                    {Locale.Mask.Item.Chat}
+                  </Button>
                   {m.builtin ? (
-                    <IconButton
-                      icon={<EyeIcon />}
-                      text={Locale.Mask.Item.View}
+                    // <IconButton
+                    //   icon={<EyeIcon />}
+                    //   text={Locale.Mask.Item.View}
+                    //   onClick={() => setEditingMaskId(m.id)}
+                    // />
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       onClick={() => setEditingMaskId(m.id)}
-                    />
+                    >
+                      <Eye />
+                      {Locale.Mask.Item.View}
+                    </Button>
                   ) : (
-                    <IconButton
-                      icon={<EditIcon />}
-                      text={Locale.Mask.Item.Edit}
+                    // <IconButton
+                    //   icon={<EditIcon />}
+                    //   text={Locale.Mask.Item.Edit}
+                    //   onClick={() => setEditingMaskId(m.id)}
+                    // />
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       onClick={() => setEditingMaskId(m.id)}
-                    />
+                    >
+                      <Pencil />
+                      {Locale.Mask.Item.Edit}
+                    </Button>
                   )}
                   {!m.builtin && (
-                    <IconButton
-                      icon={<DeleteIcon />}
-                      text={Locale.Mask.Item.Delete}
+                    // <IconButton
+                    //   icon={<DeleteIcon />}
+                    //   text={Locale.Mask.Item.Delete}
+                    //   onClick={async () => {
+                    //     if (await showConfirm(Locale.Mask.Item.DeleteConfirm)) {
+                    //       maskStore.delete(m.id);
+                    //     }
+                    //   }}
+                    // />
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       onClick={async () => {
                         if (await showConfirm(Locale.Mask.Item.DeleteConfirm)) {
                           maskStore.delete(m.id);
                         }
                       }}
-                    />
+                    >
+                      <X />
+                      {Locale.Mask.Item.Delete}
+                    </Button>
                   )}
                 </div>
               </div>
