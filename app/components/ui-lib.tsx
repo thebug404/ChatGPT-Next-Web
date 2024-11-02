@@ -23,6 +23,7 @@ import React, {
   useRef,
 } from "react";
 import { IconButton } from "./button";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export function Popover(props: {
   children: JSX.Element;
@@ -523,18 +524,7 @@ export function Selector<T>(props: {
                   }
                 }}
               >
-                {selected ? (
-                  <div
-                    style={{
-                      height: 10,
-                      width: 10,
-                      backgroundColor: "var(--primary)",
-                      borderRadius: 10,
-                    }}
-                  ></div>
-                ) : (
-                  <></>
-                )}
+                {selected ? <Checkbox checked={true} /> : <Checkbox />}
               </ListItem>
             );
           })}
