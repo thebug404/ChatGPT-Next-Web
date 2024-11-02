@@ -9,6 +9,7 @@ import {
   DEFAULT_TTS_VOICES,
 } from "../constant";
 import { InputRange } from "./input-range";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export function TTSConfigList(props: {
   ttsConfig: TTSConfig;
@@ -20,7 +21,7 @@ export function TTSConfigList(props: {
         title={Locale.Settings.TTS.Enable.Title}
         subTitle={Locale.Settings.TTS.Enable.SubTitle}
       >
-        <input
+        {/* <input
           type="checkbox"
           checked={props.ttsConfig.enable}
           onChange={(e) =>
@@ -28,7 +29,15 @@ export function TTSConfigList(props: {
               (config) => (config.enable = e.currentTarget.checked),
             )
           }
-        ></input>
+        ></input> */}
+        <Checkbox
+          checked={props.ttsConfig.enable}
+          onCheckedChange={(e) =>
+            props.updateConfig(
+              (config) => (config.enable = Boolean(e.valueOf())),
+            )
+          }
+        />
       </ListItem>
       {/* <ListItem
         title={Locale.Settings.TTS.Autoplay.Title}

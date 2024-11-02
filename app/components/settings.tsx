@@ -4,7 +4,6 @@ import styles from "./settings.module.scss";
 
 import ResetIcon from "../icons/reload.svg";
 import AddIcon from "../icons/add.svg";
-import CloseIcon from "../icons/close.svg";
 import CopyIcon from "../icons/copy.svg";
 import ClearIcon from "../icons/clear.svg";
 import LoadingIcon from "../icons/three-dots.svg";
@@ -31,13 +30,10 @@ import {
   showConfirm,
   showToast,
 } from "./ui-lib";
-import { ModelConfigList } from "./model-config";
 
 import { IconButton } from "./button";
 import {
-  SubmitKey,
   useChatStore,
-  Theme,
   useUpdateStore,
   useAccessStore,
   useAppConfig,
@@ -50,7 +46,6 @@ import Locale, {
   getLang,
 } from "../locales";
 import { copyToClipboard } from "../utils";
-import Link from "next/link";
 import {
   Anthropic,
   Azure,
@@ -66,7 +61,6 @@ import {
   RELEASE_URL,
   STORAGE_KEY,
   ServiceProvider,
-  SlotID,
   UPDATE_URL,
   Stability,
   Iflytek,
@@ -74,7 +68,6 @@ import {
 } from "../constant";
 import { Prompt, SearchService, usePromptStore } from "../store/prompt";
 import { ErrorBoundary } from "./error";
-import { InputRange } from "./input-range";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarPicker } from "./emoji";
 import { getClientConfig } from "../config/client";
@@ -83,6 +76,9 @@ import { nanoid } from "nanoid";
 import { useMaskStore } from "../store/mask";
 import { ProviderType } from "../utils/cloud";
 import { TTSConfigList } from "./tts-config";
+import { Button } from "@/components/ui/button";
+import { Pencil, X } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 function EditPromptModal(props: { id: string; onClose: () => void }) {
   const promptStore = usePromptStore();
@@ -248,7 +244,7 @@ function DangerItems() {
         title={Locale.Settings.Danger.Reset.Title}
         subTitle={Locale.Settings.Danger.Reset.SubTitle}
       >
-        <IconButton
+        {/* <IconButton
           aria={Locale.Settings.Danger.Reset.Title}
           text={Locale.Settings.Danger.Reset.Action}
           onClick={async () => {
@@ -257,13 +253,25 @@ function DangerItems() {
             }
           }}
           type="danger"
-        />
+        /> */}
+        <Button
+          onClick={async () => {
+            if (await showConfirm(Locale.Settings.Danger.Reset.Confirm)) {
+              appConfig.reset();
+            }
+          }}
+          aria-label={Locale.Settings.Danger.Reset.Title}
+          variant="destructive"
+          size="sm"
+        >
+          {Locale.Settings.Danger.Reset.Action}
+        </Button>
       </ListItem>
       <ListItem
         title={Locale.Settings.Danger.Clear.Title}
         subTitle={Locale.Settings.Danger.Clear.SubTitle}
       >
-        <IconButton
+        {/* <IconButton
           aria={Locale.Settings.Danger.Clear.Title}
           text={Locale.Settings.Danger.Clear.Action}
           onClick={async () => {
@@ -272,7 +280,19 @@ function DangerItems() {
             }
           }}
           type="danger"
-        />
+        /> */}
+        <Button
+          onClick={async () => {
+            if (await showConfirm(Locale.Settings.Danger.Clear.Confirm)) {
+              chatStore.clearAllData();
+            }
+          }}
+          aria-label={Locale.Settings.Danger.Clear.Title}
+          variant="destructive"
+          size="sm"
+        >
+          {Locale.Settings.Danger.Clear.Action}
+        </Button>
       </ListItem>
     </List>
   );
@@ -1307,12 +1327,20 @@ export function Settings() {
           <div className="window-action-button"></div>
           <div className="window-action-button"></div>
           <div className="window-action-button">
-            <IconButton
+            {/* <IconButton
               aria={Locale.UI.Close}
               icon={<CloseIcon />}
               onClick={() => navigate(Path.Home)}
               bordered
-            />
+            /> */}
+            <Button
+              variant="ghost"
+              onClick={() => navigate(Path.Home)}
+              aria-label={Locale.UI.Close}
+            >
+              <X />
+              {Locale.UI.Close}
+            </Button>
           </div>
         </div>
       </div>
@@ -1344,7 +1372,7 @@ export function Settings() {
             </Popover>
           </ListItem>
 
-          <ListItem
+          {/* <ListItem
             title={Locale.Settings.Update.Version(currentVersion ?? "unknown")}
             subTitle={
               checkingUpdate
@@ -1367,9 +1395,9 @@ export function Settings() {
                 onClick={() => checkUpdate(true)}
               />
             )}
-          </ListItem>
+          </ListItem> */}
 
-          <ListItem title={Locale.Settings.SendKey}>
+          {/* <ListItem title={Locale.Settings.SendKey}>
             <Select
               aria-label={Locale.Settings.SendKey}
               value={config.submitKey}
@@ -1386,9 +1414,9 @@ export function Settings() {
                 </option>
               ))}
             </Select>
-          </ListItem>
+          </ListItem> */}
 
-          <ListItem title={Locale.Settings.Theme}>
+          {/* <ListItem title={Locale.Settings.Theme}>
             <Select
               aria-label={Locale.Settings.Theme}
               value={config.theme}
@@ -1404,7 +1432,7 @@ export function Settings() {
                 </option>
               ))}
             </Select>
-          </ListItem>
+          </ListItem> */}
 
           <ListItem title={Locale.Settings.Lang.Name}>
             <Select
@@ -1414,15 +1442,17 @@ export function Settings() {
                 changeLang(e.target.value as any);
               }}
             >
-              {AllLangs.map((lang) => (
-                <option value={lang} key={lang}>
-                  {ALL_LANG_OPTIONS[lang]}
-                </option>
-              ))}
+              {AllLangs.filter((lang) => lang === "en" || lang === "es").map(
+                (lang) => (
+                  <option value={lang} key={lang}>
+                    {ALL_LANG_OPTIONS[lang]}
+                  </option>
+                ),
+              )}
             </Select>
           </ListItem>
 
-          <ListItem
+          {/* <ListItem
             title={Locale.Settings.FontSize.Title}
             subTitle={Locale.Settings.FontSize.SubTitle}
           >
@@ -1440,9 +1470,9 @@ export function Settings() {
                 )
               }
             ></InputRange>
-          </ListItem>
+          </ListItem> */}
 
-          <ListItem
+          {/* <ListItem
             title={Locale.Settings.FontFamily.Title}
             subTitle={Locale.Settings.FontFamily.SubTitle}
           >
@@ -1457,13 +1487,13 @@ export function Settings() {
                 )
               }
             ></input>
-          </ListItem>
+          </ListItem> */}
 
           <ListItem
             title={Locale.Settings.AutoGenerateTitle.Title}
             subTitle={Locale.Settings.AutoGenerateTitle.SubTitle}
           >
-            <input
+            {/* <input
               aria-label={Locale.Settings.AutoGenerateTitle.Title}
               type="checkbox"
               checked={config.enableAutoGenerateTitle}
@@ -1473,14 +1503,24 @@ export function Settings() {
                     (config.enableAutoGenerateTitle = e.currentTarget.checked),
                 )
               }
-            ></input>
+            ></input> */}
+            <Checkbox
+              checked={config.enableAutoGenerateTitle}
+              aria-label={Locale.Settings.AutoGenerateTitle.Title}
+              onCheckedChange={(e) =>
+                updateConfig(
+                  (config) =>
+                    (config.enableAutoGenerateTitle = Boolean(e.valueOf())),
+                )
+              }
+            />
           </ListItem>
 
           <ListItem
             title={Locale.Settings.SendPreviewBubble.Title}
             subTitle={Locale.Settings.SendPreviewBubble.SubTitle}
           >
-            <input
+            {/* <input
               aria-label={Locale.Settings.SendPreviewBubble.Title}
               type="checkbox"
               checked={config.sendPreviewBubble}
@@ -1490,14 +1530,23 @@ export function Settings() {
                     (config.sendPreviewBubble = e.currentTarget.checked),
                 )
               }
-            ></input>
+            ></input> */}
+            <Checkbox
+              checked={config.sendPreviewBubble}
+              aria-label={Locale.Settings.SendPreviewBubble.Title}
+              onCheckedChange={(e) =>
+                updateConfig(
+                  (config) => (config.sendPreviewBubble = Boolean(e.valueOf())),
+                )
+              }
+            />
           </ListItem>
 
           <ListItem
             title={Locale.Mask.Config.Artifacts.Title}
             subTitle={Locale.Mask.Config.Artifacts.SubTitle}
           >
-            <input
+            {/* <input
               aria-label={Locale.Mask.Config.Artifacts.Title}
               type="checkbox"
               checked={config.enableArtifacts}
@@ -1507,18 +1556,27 @@ export function Settings() {
                     (config.enableArtifacts = e.currentTarget.checked),
                 )
               }
-            ></input>
+            ></input> */}
+            <Checkbox
+              checked={config.enableArtifacts}
+              aria-label={Locale.Mask.Config.Artifacts.Title}
+              onCheckedChange={(e) =>
+                updateConfig(
+                  (config) => (config.enableArtifacts = Boolean(e.valueOf())),
+                )
+              }
+            />
           </ListItem>
         </List>
 
-        <SyncItems />
+        {/* <SyncItems /> */}
 
         <List>
           <ListItem
             title={Locale.Settings.Mask.Splash.Title}
             subTitle={Locale.Settings.Mask.Splash.SubTitle}
           >
-            <input
+            {/* <input
               aria-label={Locale.Settings.Mask.Splash.Title}
               type="checkbox"
               checked={!config.dontShowMaskSplashScreen}
@@ -1529,14 +1587,24 @@ export function Settings() {
                       !e.currentTarget.checked),
                 )
               }
-            ></input>
+            ></input> */}
+            <Checkbox
+              checked={!config.dontShowMaskSplashScreen}
+              aria-label={Locale.Settings.Mask.Splash.Title}
+              onCheckedChange={(e) =>
+                updateConfig(
+                  (config) =>
+                    (config.dontShowMaskSplashScreen = !Boolean(e.valueOf())),
+                )
+              }
+            />
           </ListItem>
 
           <ListItem
             title={Locale.Settings.Mask.Builtin.Title}
             subTitle={Locale.Settings.Mask.Builtin.SubTitle}
           >
-            <input
+            {/* <input
               aria-label={Locale.Settings.Mask.Builtin.Title}
               type="checkbox"
               checked={config.hideBuiltinMasks}
@@ -1546,7 +1614,16 @@ export function Settings() {
                     (config.hideBuiltinMasks = e.currentTarget.checked),
                 )
               }
-            ></input>
+            ></input> */}
+            <Checkbox
+              checked={config.hideBuiltinMasks}
+              aria-label={Locale.Settings.Mask.Builtin.Title}
+              onCheckedChange={(e) =>
+                updateConfig(
+                  (config) => (config.hideBuiltinMasks = Boolean(e.valueOf())),
+                )
+              }
+            />
           </ListItem>
         </List>
 
@@ -1555,7 +1632,7 @@ export function Settings() {
             title={Locale.Settings.Prompt.Disable.Title}
             subTitle={Locale.Settings.Prompt.Disable.SubTitle}
           >
-            <input
+            {/* <input
               aria-label={Locale.Settings.Prompt.Disable.Title}
               type="checkbox"
               checked={config.disablePromptHint}
@@ -1565,7 +1642,16 @@ export function Settings() {
                     (config.disablePromptHint = e.currentTarget.checked),
                 )
               }
-            ></input>
+            ></input> */}
+            <Checkbox
+              checked={config.disablePromptHint}
+              aria-label={Locale.Settings.Prompt.Disable.Title}
+              onCheckedChange={(e) =>
+                updateConfig(
+                  (config) => (config.disablePromptHint = Boolean(e.valueOf())),
+                )
+              }
+            />
           </ListItem>
 
           <ListItem
@@ -1575,16 +1661,27 @@ export function Settings() {
               customCount,
             )}
           >
-            <IconButton
+            {/* <IconButton
               aria={Locale.Settings.Prompt.List + Locale.Settings.Prompt.Edit}
               icon={<EditIcon />}
               text={Locale.Settings.Prompt.Edit}
               onClick={() => setShowPromptModal(true)}
-            />
+            /> */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowPromptModal(true)}
+              aria-label={
+                Locale.Settings.Prompt.List + Locale.Settings.Prompt.Edit
+              }
+            >
+              <Pencil />
+              {Locale.Settings.Prompt.Edit}
+            </Button>
           </ListItem>
         </List>
 
-        <List id={SlotID.CustomModel}>
+        {/* <List id={SlotID.CustomModel}>
           {saasStartComponent}
           {accessCodeComponent}
 
@@ -1675,9 +1772,9 @@ export function Settings() {
               }
             ></input>
           </ListItem>
-        </List>
+        </List> */}
 
-        <List>
+        {/* <List>
           <ModelConfigList
             modelConfig={config.modelConfig}
             updateConfig={(updater) => {
@@ -1686,7 +1783,7 @@ export function Settings() {
               config.update((config) => (config.modelConfig = modelConfig));
             }}
           />
-        </List>
+        </List> */}
 
         {shouldShowPromptModal && (
           <UserPromptModal onClose={() => setShowPromptModal(false)} />
