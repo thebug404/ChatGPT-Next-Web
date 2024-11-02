@@ -24,6 +24,7 @@ import React, {
 } from "react";
 import { IconButton } from "./button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Card } from "@/components/ui/card";
 
 export function Popover(props: {
   children: JSX.Element;
@@ -44,11 +45,11 @@ export function Popover(props: {
   );
 }
 
-export function Card(props: { children: JSX.Element[]; className?: string }) {
-  return (
-    <div className={styles.card + " " + props.className}>{props.children}</div>
-  );
-}
+// export function Card(props: { children: JSX.Element[]; className?: string }) {
+//   return (
+//     <div className={styles.card + " " + props.className}>{props.children}</div>
+//   );
+// }
 
 export function ListItem(props: {
   title?: string;
@@ -86,7 +87,10 @@ export function ListItem(props: {
 
 export function List(props: { children: React.ReactNode; id?: string }) {
   return (
-    <div className={styles.list} id={props.id}>
+    // <div className={styles.list} id={props.id}>
+    //   {props.children}
+    // </div>
+    <div className="mb-5 min-w-[300px] max-h-[90vh] rounded-md overflow-x-hidden overflow-y-auto p-2 bg-card">
       {props.children}
     </div>
   );
@@ -135,7 +139,7 @@ export function Modal(props: ModalProps) {
   const [isMax, setMax] = useState(!!props.defaultMax);
 
   return (
-    <div
+    <Card
       className={
         styles["modal-container"] + ` ${isMax && styles["modal-container-max"]}`
       }
@@ -171,7 +175,7 @@ export function Modal(props: ModalProps) {
           ))}
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
 

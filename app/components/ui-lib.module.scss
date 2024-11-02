@@ -39,7 +39,7 @@
   justify-content: space-between;
   align-items: center;
   min-height: 40px;
-  border-bottom: var(--border-in-light);
+  // border-bottom: var(--border-in-light);
   padding: 10px 20px;
   animation: slide-in ease 0.6s;
 
@@ -91,7 +91,7 @@
 
 .modal-container {
   box-shadow: var(--card-shadow);
-  background-color: var(--white);
+  // background-color: var(--white);
   border-radius: 12px;
   width: 80vw;
   max-width: 900px;
