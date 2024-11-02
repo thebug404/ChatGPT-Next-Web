@@ -3,9 +3,7 @@ import React, { useEffect, useRef, useMemo, useState, Fragment } from "react";
 import styles from "./home.module.scss";
 
 import { IconButton } from "./button";
-import SettingsIcon from "../icons/settings.svg";
 import BrainyIcon from "../icons/brainy.svg";
-import AddIcon from "../icons/add.svg";
 import DeleteIcon from "../icons/delete.svg";
 import DragIcon from "../icons/drag.svg";
 
@@ -27,6 +25,8 @@ import { isIOS, useMobileScreen } from "../utils";
 import dynamic from "next/dynamic";
 import { showConfirm, Selector } from "./ui-lib";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Plus, Settings } from "lucide-react";
 
 const ChatList = dynamic(async () => (await import("./chat-list")).ChatList, {
   loading: () => null,
@@ -288,11 +288,18 @@ export function SideBar(props: { className?: string }) {
             </div>
             <div className={styles["sidebar-action"]}>
               <Link to={Path.Settings}>
-                <IconButton
+                {/* <IconButton
                   aria={Locale.Settings.Title}
                   icon={<SettingsIcon />}
                   shadow
-                />
+                /> */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  aria-label={Locale.Settings.Title}
+                >
+                  <Settings />
+                </Button>
               </Link>
             </div>
             {/* <div className={styles["sidebar-action"]}>
@@ -307,9 +314,21 @@ export function SideBar(props: { className?: string }) {
           </>
         }
         secondaryAction={
-          <IconButton
-            icon={<AddIcon />}
-            text={shouldNarrow ? undefined : Locale.Home.NewChat}
+          // <IconButton
+          //   icon={<AddIcon />}
+          //   text={shouldNarrow ? undefined : Locale.Home.NewChat}
+          //   onClick={() => {
+          //     if (config.dontShowMaskSplashScreen) {
+          //       chatStore.newSession();
+          //       navigate(Path.Chat);
+          //     } else {
+          //       navigate(Path.NewChat);
+          //     }
+          //   }}
+          //   shadow
+          // />
+          <Button
+            size="sm"
             onClick={() => {
               if (config.dontShowMaskSplashScreen) {
                 chatStore.newSession();
@@ -318,8 +337,11 @@ export function SideBar(props: { className?: string }) {
                 navigate(Path.NewChat);
               }
             }}
-            shadow
-          />
+            className="w-full"
+          >
+            <Plus />
+            <span>{shouldNarrow ? undefined : Locale.Home.NewChat}</span>
+          </Button>
         }
       />
     </SideBarContainer>

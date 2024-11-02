@@ -10,7 +10,6 @@ import React, {
 } from "react";
 
 import BrainIcon from "../icons/brain.svg";
-import ReturnIcon from "../icons/return.svg";
 import CopyIcon from "../icons/copy.svg";
 import SpeakIcon from "../icons/speak.svg";
 import SpeakStopIcon from "../icons/speak-stop.svg";
@@ -23,7 +22,6 @@ import BreakIcon from "../icons/break.svg";
 import SettingsIcon from "../icons/chat-settings.svg";
 import DeleteIcon from "../icons/clear.svg";
 import PinIcon from "../icons/pin.svg";
-import EditIcon from "../icons/rename.svg";
 import ConfirmIcon from "../icons/confirm.svg";
 import CloseIcon from "../icons/close.svg";
 import CancelIcon from "../icons/cancel.svg";
@@ -116,6 +114,8 @@ import { createTTSPlayer } from "../utils/audio";
 import { MsEdgeTTS, OUTPUT_FORMAT } from "../utils/ms_edge_tts";
 import { Button } from "@/components/ui/button";
 import {
+  ArrowLeft,
+  Edit2,
   Maximize2,
   Minimize2,
   Pencil,
@@ -1587,12 +1587,21 @@ function _Chat() {
         {isMobileScreen && (
           <div className="window-actions">
             <div className={"window-action-button"}>
-              <IconButton
+              {/* <IconButton
                 icon={<ReturnIcon />}
                 bordered
                 title={Locale.Chat.Actions.ChatList}
                 onClick={() => navigate(Path.Home)}
-              />
+              /> */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full"
+                title={Locale.Chat.Actions.ChatList}
+                onClick={() => navigate(Path.Home)}
+              >
+                <ArrowLeft />
+              </Button>
             </div>
           </div>
         )}
@@ -1743,9 +1752,11 @@ function _Chat() {
                   <div className={styles["chat-message-header"]}>
                     <div className={styles["chat-message-avatar"]}>
                       <div className={styles["chat-message-edit"]}>
-                        <IconButton
-                          icon={<EditIcon />}
-                          aria={Locale.Chat.Actions.Edit}
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="rounded-full"
+                          aria-label={Locale.Chat.Actions.Edit}
                           onClick={async () => {
                             const newMessage = await showPrompt(
                               Locale.Chat.Actions.Edit,
@@ -1775,7 +1786,9 @@ function _Chat() {
                               }
                             });
                           }}
-                        ></IconButton>
+                        >
+                          <Edit2 />
+                        </Button>
                       </div>
                       {isUser ? (
                         <Avatar avatar={config.avatar} />

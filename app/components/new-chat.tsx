@@ -1,12 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Path, SlotID } from "../constant";
-import { IconButton } from "./button";
 import { EmojiAvatar } from "./emoji";
 import styles from "./new-chat.module.scss";
-
-import LeftIcon from "../icons/left.svg";
-import LightningIcon from "../icons/lightning.svg";
-import EyeIcon from "../icons/eye.svg";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { Mask, useMaskStore } from "../store/mask";
@@ -16,6 +11,8 @@ import { MaskAvatar } from "./mask";
 import { useCommand } from "../command";
 import { showConfirm } from "./ui-lib";
 import { BUILTIN_MASK_STORE } from "../masks";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, Eye, Rocket } from "lucide-react";
 
 function MaskItem(props: { mask: Mask; onClick?: () => void }) {
   return (
@@ -113,14 +110,29 @@ export function NewChat() {
   return (
     <div className={styles["new-chat"]}>
       <div className={styles["mask-header"]}>
-        <IconButton
+        {/* <IconButton
           icon={<LeftIcon />}
           text={Locale.NewChat.Return}
           onClick={() => navigate(Path.Home)}
-        ></IconButton>
+        ></IconButton> */}
+        <Button variant="ghost" onClick={() => navigate(Path.Home)}>
+          <ChevronLeft />
+          <span className="ms-1">{Locale.NewChat.Return}</span>
+        </Button>
         {!state?.fromHome && (
-          <IconButton
-            text={Locale.NewChat.NotShow}
+          // <IconButton
+          //   text={Locale.NewChat.NotShow}
+          //   onClick={async () => {
+          //     if (await showConfirm(Locale.NewChat.ConfirmNoShow)) {
+          //       startChat();
+          //       config.update(
+          //         (config) => (config.dontShowMaskSplashScreen = true),
+          //       );
+          //     }
+          //   }}
+          // ></IconButton>
+          <Button
+            variant="ghost"
             onClick={async () => {
               if (await showConfirm(Locale.NewChat.ConfirmNoShow)) {
                 startChat();
@@ -129,7 +141,9 @@ export function NewChat() {
                 );
               }
             }}
-          ></IconButton>
+          >
+            {Locale.NewChat.NotShow}
+          </Button>
         )}
       </div>
       <div className={styles["mask-cards"]}>
@@ -147,23 +161,31 @@ export function NewChat() {
       <div className={styles["title"]}>{Locale.NewChat.Title}</div>
       <div className={styles["sub-title"]}>{Locale.NewChat.SubTitle}</div>
 
-      <div className={styles["actions"]}>
-        <IconButton
+      <div className={`space-x-2 ${styles["actions"]}`}>
+        {/* <IconButton
           text={Locale.NewChat.More}
           onClick={() => navigate(Path.Masks)}
           icon={<EyeIcon />}
           bordered
           shadow
-        />
+        /> */}
+        <Button variant="secondary" onClick={() => navigate(Path.Masks)}>
+          <Eye />
+          <span>{Locale.NewChat.More}</span>
+        </Button>
 
-        <IconButton
+        {/* <IconButton
           text={Locale.NewChat.Skip}
           onClick={() => startChat()}
           icon={<LightningIcon />}
           type="primary"
           shadow
           className={styles["skip"]}
-        />
+        /> */}
+        <Button onClick={() => startChat()}>
+          <Rocket />
+          <span>{Locale.NewChat.Skip}</span>
+        </Button>
       </div>
 
       <div className={styles["masks"]} ref={maskRef}>

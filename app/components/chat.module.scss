@@ -516,7 +516,7 @@
 }
 
 .chat-message-user>.chat-message-container>.chat-message-item {
-  background-color: var(--second);
+  background-color: hsl(var(--muted));
 
   &:hover {
     min-width: 0;
