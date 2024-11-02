@@ -29,6 +29,7 @@ import { AuthPage } from "./auth";
 import { getClientConfig } from "../config/client";
 import { type ClientApi, getClientApi } from "../client/api";
 import { useAccessStore } from "../store";
+import { Card } from "@/components/ui/card";
 
 export function Loading(props: { noLogo?: boolean }) {
   return (
@@ -143,9 +144,12 @@ const loadAsyncGoogleFont = () => {
 
 export function WindowContent(props: { children: React.ReactNode }) {
   return (
-    <div className={styles["window-content"]} id={SlotID.AppBody}>
+    <Card
+      className={`rounded-none dark:bg-primary-foreground ${styles["window-content"]}`}
+      id={SlotID.AppBody}
+    >
       {props?.children}
-    </div>
+    </Card>
   );
 }
 
