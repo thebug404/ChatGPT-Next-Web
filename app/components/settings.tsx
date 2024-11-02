@@ -3,13 +3,8 @@ import { useState, useEffect, useMemo } from "react";
 import styles from "./settings.module.scss";
 
 import ResetIcon from "../icons/reload.svg";
-import AddIcon from "../icons/add.svg";
-import CopyIcon from "../icons/copy.svg";
-import ClearIcon from "../icons/clear.svg";
 import LoadingIcon from "../icons/three-dots.svg";
-import EditIcon from "../icons/edit.svg";
 import FireIcon from "../icons/fire.svg";
-import EyeIcon from "../icons/eye.svg";
 import DownloadIcon from "../icons/download.svg";
 import UploadIcon from "../icons/upload.svg";
 import ConfigIcon from "../icons/config.svg";
@@ -20,7 +15,7 @@ import CloudSuccessIcon from "../icons/cloud-success.svg";
 import CloudFailIcon from "../icons/cloud-fail.svg";
 import { trackSettingsPageGuideToCPaymentClick } from "../utils/auth-settings-events";
 import {
-  Input,
+  // Input,
   List,
   ListItem,
   Modal,
@@ -44,6 +39,7 @@ import Locale, {
   ALL_LANG_OPTIONS,
   changeLang,
   getLang,
+  Lang,
 } from "../locales";
 import { copyToClipboard } from "../utils";
 import {
@@ -77,8 +73,18 @@ import { useMaskStore } from "../store/mask";
 import { ProviderType } from "../utils/cloud";
 import { TTSConfigList } from "./tts-config";
 import { Button } from "@/components/ui/button";
-import { Pencil, X } from "lucide-react";
+import { Copy, Eye, Pencil, Plus, X } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select as SelectUI,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 function EditPromptModal(props: { id: string; onClose: () => void }) {
   const promptStore = usePromptStore();
@@ -90,16 +96,19 @@ function EditPromptModal(props: { id: string; onClose: () => void }) {
         title={Locale.Settings.Prompt.EditModal.Title}
         onClose={props.onClose}
         actions={[
-          <IconButton
-            key=""
-            onClick={props.onClose}
-            text={Locale.UI.Confirm}
-            bordered
-          />,
+          // <IconButton
+          //   key=""
+          //   onClick={props.onClose}
+          //   text={Locale.UI.Confirm}
+          //   bordered
+          // />,
+          <Button key="" onClick={props.onClose} size="sm">
+            {Locale.UI.Confirm}
+          </Button>,
         ]}
       >
         <div className={styles["edit-prompt-modal"]}>
-          <input
+          {/* <input
             type="text"
             value={prompt.title}
             readOnly={!prompt.isUser}
@@ -110,8 +119,19 @@ function EditPromptModal(props: { id: string; onClose: () => void }) {
                 (prompt) => (prompt.title = e.currentTarget.value),
               )
             }
-          ></input>
+          ></input> */}
           <Input
+            value={prompt.title}
+            readOnly={!prompt.isUser}
+            className="mb-4 text-start"
+            onInput={(e) =>
+              promptStore.updatePrompt(
+                props.id,
+                (prompt) => (prompt.title = e.currentTarget.value),
+              )
+            }
+          />
+          <Textarea
             value={prompt.content}
             readOnly={!prompt.isUser}
             className={styles["edit-prompt-content"]}
@@ -122,7 +142,7 @@ function EditPromptModal(props: { id: string; onClose: () => void }) {
                 (prompt) => (prompt.content = e.currentTarget.value),
               )
             }
-          ></Input>
+          />
         </div>
       </Modal>
     </div>
@@ -155,7 +175,22 @@ function UserPromptModal(props: { onClose?: () => void }) {
         title={Locale.Settings.Prompt.Modal.Title}
         onClose={() => props.onClose?.()}
         actions={[
-          <IconButton
+          // <IconButton
+          //   key="add"
+          //   onClick={() => {
+          //     const promptId = promptStore.add({
+          //       id: nanoid(),
+          //       createdAt: Date.now(),
+          //       title: "Empty Prompt",
+          //       content: "Empty Prompt Content",
+          //     });
+          //     setEditingPromptId(promptId);
+          //   }}
+          //   icon={<AddIcon />}
+          //   bordered
+          //   text={Locale.Settings.Prompt.Modal.Add}
+          // />,
+          <Button
             key="add"
             onClick={() => {
               const promptId = promptStore.add({
@@ -166,57 +201,100 @@ function UserPromptModal(props: { onClose?: () => void }) {
               });
               setEditingPromptId(promptId);
             }}
-            icon={<AddIcon />}
-            bordered
-            text={Locale.Settings.Prompt.Modal.Add}
-          />,
+            size="sm"
+          >
+            <Plus />
+            {Locale.Settings.Prompt.Modal.Add}
+          </Button>,
         ]}
       >
         <div className={styles["user-prompt-modal"]}>
-          <input
+          {/* <input
             type="text"
             className={styles["user-prompt-search"]}
             placeholder={Locale.Settings.Prompt.Modal.Search}
             value={searchInput}
             onInput={(e) => setSearchInput(e.currentTarget.value)}
-          ></input>
+          ></input> */}
+          <Input
+            className="mb-4"
+            value={searchInput}
+            placeholder={Locale.Settings.Prompt.Modal.Search}
+            onInput={(e) => setSearchInput(e.currentTarget.value)}
+          />
 
           <div className={styles["user-prompt-list"]}>
             {prompts.map((v, _) => (
               <div className={styles["user-prompt-item"]} key={v.id ?? v.title}>
                 <div className={styles["user-prompt-header"]}>
                   <div className={styles["user-prompt-title"]}>{v.title}</div>
-                  <div className={styles["user-prompt-content"] + " one-line"}>
+                  <div
+                    className={`text-muted-foreground ${
+                      styles["user-prompt-content"] + " one-line"
+                    }`}
+                  >
                     {v.content}
                   </div>
                 </div>
 
                 <div className={styles["user-prompt-buttons"]}>
                   {v.isUser && (
-                    <IconButton
-                      icon={<ClearIcon />}
-                      className={styles["user-prompt-button"]}
+                    // <IconButton
+                    //   icon={<ClearIcon />}
+                    //   className={styles["user-prompt-button"]}
+                    //   onClick={() => promptStore.remove(v.id!)}
+                    // />
+                    <Button
                       onClick={() => promptStore.remove(v.id!)}
-                    />
+                      variant="ghost"
+                      size="icon"
+                      className="rounded-full"
+                    >
+                      <X />
+                    </Button>
                   )}
                   {v.isUser ? (
-                    <IconButton
-                      icon={<EditIcon />}
-                      className={styles["user-prompt-button"]}
+                    // <IconButton
+                    //   icon={<EditIcon />}
+                    //   className={styles["user-prompt-button"]}
+                    //   onClick={() => setEditingPromptId(v.id)}
+                    // />
+                    <Button
                       onClick={() => setEditingPromptId(v.id)}
-                    />
+                      variant="ghost"
+                      size="icon"
+                      className="rounded-full"
+                    >
+                      <Pencil />
+                    </Button>
                   ) : (
-                    <IconButton
-                      icon={<EyeIcon />}
-                      className={styles["user-prompt-button"]}
+                    // <IconButton
+                    //   icon={<EyeIcon />}
+                    //   className={styles["user-prompt-button"]}
+                    //   onClick={() => setEditingPromptId(v.id)}
+                    // />
+                    <Button
                       onClick={() => setEditingPromptId(v.id)}
-                    />
+                      variant="ghost"
+                      size="icon"
+                      className="rounded-full"
+                    >
+                      <Eye />
+                    </Button>
                   )}
-                  <IconButton
+                  {/* <IconButton
                     icon={<CopyIcon />}
                     className={styles["user-prompt-button"]}
                     onClick={() => copyToClipboard(v.content)}
-                  />
+                  /> */}
+                  <Button
+                    onClick={() => copyToClipboard(v.content)}
+                    variant="ghost"
+                    size="icon"
+                    className="rounded-full"
+                  >
+                    <Copy />
+                  </Button>
                 </div>
               </div>
             ))}
@@ -1435,7 +1513,7 @@ export function Settings() {
           </ListItem> */}
 
           <ListItem title={Locale.Settings.Lang.Name}>
-            <Select
+            {/* <Select
               aria-label={Locale.Settings.Lang.Name}
               value={getLang()}
               onChange={(e) => {
@@ -1449,7 +1527,26 @@ export function Settings() {
                   </option>
                 ),
               )}
-            </Select>
+            </Select> */}
+            <SelectUI
+              onValueChange={(value) => changeLang(value as Lang)}
+              defaultValue={getLang()}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder={Locale.Settings.Lang.Name} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {AllLangs.filter(
+                    (lang) => lang === "en" || lang === "es",
+                  ).map((lang) => (
+                    <SelectItem key={lang} value={lang}>
+                      {ALL_LANG_OPTIONS[lang]}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </SelectUI>
           </ListItem>
 
           {/* <ListItem
