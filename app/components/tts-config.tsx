@@ -1,15 +1,23 @@
 import { TTSConfig, TTSConfigValidator } from "../store";
 
 import Locale from "../locales";
-import { ListItem, Select } from "./ui-lib";
+import { ListItem } from "./ui-lib";
 import {
   DEFAULT_TTS_ENGINE,
   DEFAULT_TTS_ENGINES,
   DEFAULT_TTS_MODELS,
   DEFAULT_TTS_VOICES,
 } from "../constant";
-import { InputRange } from "./input-range";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectTrigger,
+  SelectValue,
+  SelectItem,
+} from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
 
 export function TTSConfigList(props: {
   ttsConfig: TTSConfig;
@@ -54,7 +62,7 @@ export function TTSConfigList(props: {
         ></input>
       </ListItem> */}
       <ListItem title={Locale.Settings.TTS.Engine}>
-        <Select
+        {/* <Select
           value={props.ttsConfig.engine}
           onChange={(e) => {
             props.updateConfig(
@@ -70,12 +78,33 @@ export function TTSConfigList(props: {
               {v}
             </option>
           ))}
+        </Select> */}
+        <Select
+          onValueChange={(value) => {
+            props.updateConfig(
+              (config) => (config.engine = TTSConfigValidator.engine(value)),
+            );
+          }}
+          defaultValue={props.ttsConfig.engine}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select engine" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {DEFAULT_TTS_ENGINES.map((v, i) => (
+                <SelectItem key={i} value={v}>
+                  {v}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
         </Select>
       </ListItem>
       {props.ttsConfig.engine === DEFAULT_TTS_ENGINE && (
         <>
           <ListItem title={Locale.Settings.TTS.Model}>
-            <Select
+            {/* <Select
               value={props.ttsConfig.model}
               onChange={(e) => {
                 props.updateConfig(
@@ -91,13 +120,34 @@ export function TTSConfigList(props: {
                   {v}
                 </option>
               ))}
+            </Select> */}
+            <Select
+              onValueChange={(value) => {
+                props.updateConfig(
+                  (config) => (config.model = TTSConfigValidator.model(value)),
+                );
+              }}
+              defaultValue={props.ttsConfig.model}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select model" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {DEFAULT_TTS_MODELS.map((v, i) => (
+                    <SelectItem key={i} value={v}>
+                      {v}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
             </Select>
           </ListItem>
           <ListItem
             title={Locale.Settings.TTS.Voice.Title}
             subTitle={Locale.Settings.TTS.Voice.SubTitle}
           >
-            <Select
+            {/* <Select
               value={props.ttsConfig.voice}
               onChange={(e) => {
                 props.updateConfig(
@@ -113,13 +163,34 @@ export function TTSConfigList(props: {
                   {v}
                 </option>
               ))}
+            </Select> */}
+            <Select
+              onValueChange={(value) => {
+                props.updateConfig(
+                  (config) => (config.voice = TTSConfigValidator.voice(value)),
+                );
+              }}
+              defaultValue={props.ttsConfig.voice}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select voice" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {DEFAULT_TTS_VOICES.map((v, i) => (
+                    <SelectItem key={i} value={v}>
+                      {v}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
             </Select>
           </ListItem>
           <ListItem
             title={Locale.Settings.TTS.Speed.Title}
             subTitle={Locale.Settings.TTS.Speed.SubTitle}
           >
-            <InputRange
+            {/* <InputRange
               aria={Locale.Settings.TTS.Speed.Title}
               value={props.ttsConfig.speed?.toFixed(1)}
               min="0.3"
@@ -133,7 +204,23 @@ export function TTSConfigList(props: {
                     )),
                 );
               }}
-            ></InputRange>
+            ></InputRange> */}
+            <Slider
+              defaultValue={[props.ttsConfig.speed.toFixed(1) as any]}
+              min={0.5}
+              max={3}
+              step={0.5}
+              aria-label={Locale.Settings.TTS.Speed.Title}
+              className="max-w-[40%]"
+              onValueChange={(value) => {
+                props.updateConfig(
+                  (config) =>
+                    (config.speed = TTSConfigValidator.speed(
+                      value.at(0) as number,
+                    )),
+                );
+              }}
+            />
           </ListItem>
         </>
       )}
