@@ -181,7 +181,7 @@ export function ModelConfigList(props: {
           min={1024}
           max={512000}
           defaultValue={props.modelConfig.max_tokens}
-          className="max-w-[200px]"
+          className="text-start max-w-[200px]"
           onChange={(value) =>
             props.updateConfig(
               (config) =>
@@ -320,7 +320,7 @@ export function ModelConfigList(props: {
             <Input
               aria-label={Locale.Settings.InputTemplate.Title}
               defaultValue={props.modelConfig.template}
-              className="max-w-[200px]"
+              className="text-start max-w-[200px]"
               onChange={(value) =>
                 props.updateConfig(
                   (config) => (config.template = value.target.value),
@@ -386,7 +386,7 @@ export function ModelConfigList(props: {
           min={500}
           max={4000}
           defaultValue={props.modelConfig.compressMessageLengthThreshold}
-          className="max-w-[200px]"
+          className="text-start max-w-[200px]"
           onChange={(value) =>
             props.updateConfig(
               (config) =>
