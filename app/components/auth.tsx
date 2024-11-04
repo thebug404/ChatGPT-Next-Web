@@ -1,5 +1,4 @@
 import styles from "./auth.module.scss";
-import { IconButton } from "./button";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Path, SAAS_CHAT_URL } from "../constant";
@@ -9,14 +8,16 @@ import Delete from "../icons/close.svg";
 import Arrow from "../icons/arrow.svg";
 import Logo from "../icons/logo.svg";
 import { useMobileScreen } from "@/app/utils";
-import BotIcon from "../icons/bot.svg";
 import { getClientConfig } from "../config/client";
-import LeftIcon from "@/app/icons/left.svg";
 import { safeLocalStorage } from "@/app/utils";
 import {
   trackSettingsPageGuideToCPaymentClick,
   trackAuthorizationPageButtonToCPaymentClick,
 } from "../utils/auth-settings-events";
+import { Button } from "@/components/ui/button";
+import { BrainCircuit, ChevronLeft } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 const storage = safeLocalStorage();
 
 export function AuthPage() {
@@ -44,75 +45,104 @@ export function AuthPage() {
   }, []);
 
   return (
-    <div className={styles["auth-page"]}>
-      <TopBanner></TopBanner>
-      <div className={styles["auth-header"]}>
-        <IconButton
+    <Card className="w-full">
+      {/* <TopBanner></TopBanner> */}
+      <CardHeader className="flex-row">
+        {/* <IconButton
           icon={<LeftIcon />}
           text={Locale.Auth.Return}
           onClick={() => navigate(Path.Home)}
-        ></IconButton>
-      </div>
-      <div className={`no-dark ${styles["auth-logo"]}`}>
-        <BotIcon />
-      </div>
+        ></IconButton> */}
+        <Button
+          className="w-auto"
+          variant="ghost"
+          onClick={() => navigate(Path.Home)}
+        >
+          <ChevronLeft />
+          {Locale.Auth.Return}
+        </Button>
+      </CardHeader>
 
-      <div className={styles["auth-title"]}>{Locale.Auth.Title}</div>
-      <div className={styles["auth-tips"]}>{Locale.Auth.Tips}</div>
+      <CardContent className="text-center">
+        <div className="flex justify-center mb-5">
+          <figure className="flex items-center justify-center h-[70px] w-[70px] rounded-full border-2 border-white p-4">
+            <BrainCircuit size={60} />
+          </figure>
+        </div>
 
-      <input
-        className={styles["auth-input"]}
-        type="password"
-        placeholder={Locale.Auth.Input}
-        value={accessStore.accessCode}
-        onChange={(e) => {
-          accessStore.update(
-            (access) => (access.accessCode = e.currentTarget.value),
-          );
-        }}
-      />
-      {!accessStore.hideUserApiKey ? (
-        <>
-          <div className={styles["auth-tips"]}>{Locale.Auth.SubTips}</div>
-          <input
-            className={styles["auth-input"]}
-            type="password"
-            placeholder={Locale.Settings.Access.OpenAI.ApiKey.Placeholder}
-            value={accessStore.openaiApiKey}
-            onChange={(e) => {
-              accessStore.update(
-                (access) => (access.openaiApiKey = e.currentTarget.value),
-              );
-            }}
-          />
-          <input
-            className={styles["auth-input-second"]}
-            type="password"
-            placeholder={Locale.Settings.Access.Google.ApiKey.Placeholder}
-            value={accessStore.googleApiKey}
-            onChange={(e) => {
-              accessStore.update(
-                (access) => (access.googleApiKey = e.currentTarget.value),
-              );
-            }}
-          />
-        </>
-      ) : null}
+        {/* <div className={styles["auth-title"]}>{Locale.Auth.Title}</div> */}
+        <h1 className="text-3xl">{Locale.Auth.Title}</h1>
+        {/* <div className={styles["auth-tips"]}>{Locale.Auth.Tips}</div> */}
+        <p className="text-md text-muted-foreground">{Locale.Auth.Tips}</p>
 
-      <div className={styles["auth-actions"]}>
-        <IconButton
-          text={Locale.Auth.Confirm}
-          type="primary"
-          onClick={goChat}
-        />
-        <IconButton
-          text={Locale.Auth.SaasTips}
-          onClick={() => {
-            goSaas();
+        {/* <input
+          className={styles["auth-input"]}
+          type="password"
+          placeholder={Locale.Auth.Input}
+          value={accessStore.accessCode}
+          onChange={(e) => {
+            accessStore.update(
+              (access) => (access.accessCode = e.currentTarget.value),
+            );
+          }}
+        /> */}
+        <Input
+          type="password"
+          placeholder={Locale.Auth.Input}
+          value={accessStore.accessCode}
+          className="mx-auto dark:bg-muted w-full sm:max-w-[400px] mt-5 mb-4"
+          onChange={(e) => {
+            accessStore.update(
+              (access) => (access.accessCode = e.currentTarget.value),
+            );
           }}
         />
-      </div>
-    </div>
+        {/* {!accessStore.hideUserApiKey ? (
+          <>
+            <div className={styles["auth-tips"]}>{Locale.Auth.SubTips}</div>
+            <input
+              className={styles["auth-input"]}
+              type="password"
+              placeholder={Locale.Settings.Access.OpenAI.ApiKey.Placeholder}
+              value={accessStore.openaiApiKey}
+              onChange={(e) => {
+                accessStore.update(
+                  (access) => (access.openaiApiKey = e.currentTarget.value),
+                );
+              }}
+            />
+            <input
+              className={styles["auth-input-second"]}
+              type="password"
+              placeholder={Locale.Settings.Access.Google.ApiKey.Placeholder}
+              value={accessStore.googleApiKey}
+              onChange={(e) => {
+                accessStore.update(
+                  (access) => (access.googleApiKey = e.currentTarget.value),
+                );
+              }}
+            />
+          </>
+        ) : null} */}
+
+        <div>
+          {/* <IconButton
+            text={Locale.Auth.Confirm}
+            type="primary"
+            onClick={goChat}
+          /> */}
+          <Button className="w-full sm:max-w-[400px]" onClick={goChat}>
+            {Locale.Auth.Confirm}
+          </Button>
+          {/* <IconButton
+            text={Locale.Auth.SaasTips}
+            onClick={() => {
+              goSaas();
+            }}
+          /> */}
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
