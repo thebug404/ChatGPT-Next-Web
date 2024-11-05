@@ -81,14 +81,28 @@ async function fetchEN() {
   }
 }
 
+// async function main() {
+//   Promise.all([fetchCN(), fetchTW(), fetchEN()])
+//     .then(([cn, tw, en]) => {
+//       fs.writeFile(FILE, JSON.stringify({ cn, tw, en }));
+//     })
+//     .catch((e) => {
+//       console.error("[Fetch] failed to fetch prompts");
+//       fs.writeFile(FILE, JSON.stringify({ cn: [], tw: [], en: [] }));
+//     })
+//     .finally(() => {
+//       console.log("[Fetch] saved to " + FILE);
+//     });
+// }
+
 async function main() {
-  Promise.all([fetchCN(), fetchTW(), fetchEN()])
-    .then(([cn, tw, en]) => {
-      fs.writeFile(FILE, JSON.stringify({ cn, tw, en }));
+  Promise.all([fetchEN()])
+    .then(([en]) => {
+      fs.writeFile(FILE, JSON.stringify({ en }));
     })
     .catch((e) => {
       console.error("[Fetch] failed to fetch prompts");
-      fs.writeFile(FILE, JSON.stringify({ cn: [], tw: [], en: [] }));
+      fs.writeFile(FILE, JSON.stringify({ en: [] }));
     })
     .finally(() => {
       console.log("[Fetch] saved to " + FILE);
