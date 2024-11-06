@@ -6,7 +6,7 @@ import {
   List,
   ListItem,
   Modal,
-  Select,
+  // Select,
   showImageModal,
   showModal,
   showToast,
@@ -40,6 +40,14 @@ import { EXPORT_MESSAGE_CLASS_NAME } from "../constant";
 import { getClientConfig } from "../config/client";
 import { type ClientApi, getClientApi } from "../client/api";
 import { getMessageTextContent } from "../utils";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
   loading: () => <LoadingIcon />,
@@ -210,7 +218,7 @@ export function MessageExporter() {
             title={Locale.Export.Format.Title}
             subTitle={Locale.Export.Format.SubTitle}
           >
-            <Select
+            {/* <Select
               value={exportConfig.format}
               onChange={(e) =>
                 updateExportConfig(
@@ -224,13 +232,30 @@ export function MessageExporter() {
                   {f}
                 </option>
               ))}
+            </Select> */}
+            <Select
+              defaultValue={exportConfig.format}
+              onValueChange={(value) => {
+                updateExportConfig((config) => (config.format = value as any));
+              }}
+            >
+              <SelectTrigger className="max-w-[150px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {formats.map((f) => (
+                  <SelectItem key={f} value={f}>
+                    {f}
+                  </SelectItem>
+                ))}
+              </SelectContent>
             </Select>
           </ListItem>
           <ListItem
             title={Locale.Export.IncludeContext.Title}
             subTitle={Locale.Export.IncludeContext.SubTitle}
           >
-            <input
+            {/* <input
               type="checkbox"
               checked={exportConfig.includeContext}
               onChange={(e) => {
@@ -238,7 +263,16 @@ export function MessageExporter() {
                   (config) => (config.includeContext = e.currentTarget.checked),
                 );
               }}
-            ></input>
+            ></input> */}
+            <Checkbox
+              checked={exportConfig.includeContext}
+              onCheckedChange={(checked) => {
+                updateExportConfig(
+                  (config) =>
+                    (config.includeContext = Boolean(checked.valueOf())),
+                );
+              }}
+            />
           </ListItem>
         </List>
         <MessageSelector

@@ -8,6 +8,9 @@ import Locale from "../locales";
 
 import styles from "./message-selector.module.scss";
 import { getMessageTextContent } from "../utils";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 
 function useShiftRange() {
   const [startIndex, setStartIndex] = useState<number>();
@@ -145,8 +148,8 @@ export function MessageSelector(props: {
 
   return (
     <div className={styles["message-selector"]}>
-      <div className={styles["message-filter"]}>
-        <input
+      <div className={`space-x-3 ${styles["message-filter"]}`}>
+        {/* <input
           type="text"
           placeholder={Locale.Select.Search}
           className={styles["filter-item"] + " " + styles["search-bar"]}
@@ -155,15 +158,24 @@ export function MessageSelector(props: {
             setSearchInput(e.currentTarget.value);
             doSearch(e.currentTarget.value);
           }}
-        ></input>
+        ></input> */}
+        <Input
+          placeholder={Locale.Select.Search}
+          defaultValue={searchInput}
+          onChange={(e) => {
+            setSearchInput(e.currentTarget.value);
+            doSearch(e.currentTarget.value);
+          }}
+        />
 
         <div className={styles["actions"]}>
-          <IconButton
+          {/* <IconButton
             text={Locale.Select.All}
             bordered
             className={styles["filter-item"]}
             onClick={selectAll}
-          />
+          /> */}
+          <Button onClick={selectAll}>{Locale.Select.All}</Button>
           <IconButton
             text={Locale.Select.Latest}
             bordered
@@ -227,7 +239,8 @@ export function MessageSelector(props: {
               </div>
 
               <div className={styles["checkbox"]}>
-                <input type="checkbox" checked={isSelected} readOnly></input>
+                {/* <input type="checkbox" checked={isSelected} readOnly></input> */}
+                <Checkbox checked={isSelected} />
               </div>
             </div>
           );
