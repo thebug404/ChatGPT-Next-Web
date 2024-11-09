@@ -225,7 +225,7 @@ export function useLoadData() {
 }
 
 export function Home() {
-  useSwitchTheme();
+  // useSwitchTheme();
   useLoadData();
   useHtmlLang();
 
