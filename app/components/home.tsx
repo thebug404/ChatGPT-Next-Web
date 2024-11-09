@@ -6,7 +6,6 @@ import { useState, useEffect } from "react";
 
 import styles from "./home.module.scss";
 
-import BotIcon from "../icons/bot.svg";
 import LoadingIcon from "../icons/three-dots.svg";
 
 import { getCSSVar, useMobileScreen } from "../utils";
@@ -30,11 +29,19 @@ import { getClientConfig } from "../config/client";
 import { type ClientApi, getClientApi } from "../client/api";
 import { useAccessStore } from "../store";
 import { Card } from "@/components/ui/card";
+import { BrainCircuit } from "lucide-react";
 
 export function Loading(props: { noLogo?: boolean }) {
   return (
     <div className={styles["loading-content"] + " no-dark"}>
-      {!props.noLogo && <BotIcon />}
+      {
+        // !props.noLogo && <BotIcon />
+        !props.noLogo && (
+          <figure className="h-[50px] w-[50px] flex items-center justify-center rounded-full mb-2">
+            <BrainCircuit size={35} />
+          </figure>
+        )
+      }
       <LoadingIcon />
     </div>
   );
