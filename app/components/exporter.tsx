@@ -48,6 +48,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
 
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
   loading: () => <LoadingIcon />,
@@ -80,83 +82,7 @@ export function ExportMessageModal(props: { onClose: () => void }) {
   );
 }
 
-function useSteps(
-  steps: Array<{
-    name: string;
-    value: string;
-  }>,
-) {
-  const stepCount = steps.length;
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const nextStep = () =>
-    setCurrentStepIndex((currentStepIndex + 1) % stepCount);
-  const prevStep = () =>
-    setCurrentStepIndex((currentStepIndex - 1 + stepCount) % stepCount);
-
-  return {
-    currentStepIndex,
-    setCurrentStepIndex,
-    nextStep,
-    prevStep,
-    currentStep: steps[currentStepIndex],
-  };
-}
-
-function Steps<
-  T extends {
-    name: string;
-    value: string;
-  }[],
->(props: { steps: T; onStepChange?: (index: number) => void; index: number }) {
-  const steps = props.steps;
-  const stepCount = steps.length;
-
-  return (
-    <div className={styles["steps"]}>
-      <div className={styles["steps-progress"]}>
-        <div
-          className={styles["steps-progress-inner"]}
-          style={{
-            width: `${((props.index + 1) / stepCount) * 100}%`,
-          }}
-        ></div>
-      </div>
-      <div className={styles["steps-inner"]}>
-        {steps.map((step, i) => {
-          return (
-            <div
-              key={i}
-              className={`${styles["step"]} ${
-                styles[i <= props.index ? "step-finished" : ""]
-              } ${i === props.index && styles["step-current"]} clickable`}
-              onClick={() => {
-                props.onStepChange?.(i);
-              }}
-              role="button"
-            >
-              <span className={styles["step-index"]}>{i + 1}</span>
-              <span className={styles["step-name"]}>{step.name}</span>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
 export function MessageExporter() {
-  const steps = [
-    {
-      name: Locale.Export.Steps.Select,
-      value: "select",
-    },
-    {
-      name: Locale.Export.Steps.Preview,
-      value: "preview",
-    },
-  ];
-  const { currentStep, setCurrentStepIndex, currentStepIndex } =
-    useSteps(steps);
   const formats = ["text", "image", "json"] as const;
   type ExportFormat = (typeof formats)[number];
 
@@ -187,6 +113,7 @@ export function MessageExporter() {
     session.mask.context,
     selection,
   ]);
+
   function preview() {
     if (exportConfig.format === "text") {
       return (
@@ -202,88 +129,73 @@ export function MessageExporter() {
       );
     }
   }
+
   return (
     <>
-      <Steps
-        steps={steps}
-        index={currentStepIndex}
-        onStepChange={setCurrentStepIndex}
-      />
-      <div
-        className={styles["message-exporter-body"]}
-        style={currentStep.value !== "select" ? { display: "none" } : {}}
-      >
-        <List>
-          <ListItem
-            title={Locale.Export.Format.Title}
-            subTitle={Locale.Export.Format.SubTitle}
-          >
-            {/* <Select
-              value={exportConfig.format}
-              onChange={(e) =>
-                updateExportConfig(
-                  (config) =>
-                    (config.format = e.currentTarget.value as ExportFormat),
-                )
-              }
-            >
-              {formats.map((f) => (
-                <option key={f} value={f}>
-                  {f}
-                </option>
-              ))}
-            </Select> */}
-            <Select
-              defaultValue={exportConfig.format}
-              onValueChange={(value) => {
-                updateExportConfig((config) => (config.format = value as any));
-              }}
-            >
-              <SelectTrigger className="max-w-[150px]">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {formats.map((f) => (
-                  <SelectItem key={f} value={f}>
-                    {f}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </ListItem>
-          <ListItem
-            title={Locale.Export.IncludeContext.Title}
-            subTitle={Locale.Export.IncludeContext.SubTitle}
-          >
-            {/* <input
-              type="checkbox"
-              checked={exportConfig.includeContext}
-              onChange={(e) => {
-                updateExportConfig(
-                  (config) => (config.includeContext = e.currentTarget.checked),
-                );
-              }}
-            ></input> */}
-            <Checkbox
-              checked={exportConfig.includeContext}
-              onCheckedChange={(checked) => {
-                updateExportConfig(
-                  (config) =>
-                    (config.includeContext = Boolean(checked.valueOf())),
-                );
-              }}
-            />
-          </ListItem>
-        </List>
-        <MessageSelector
-          selection={selection}
-          updateSelection={updateSelection}
-          defaultSelectAll
-        />
-      </div>
-      {currentStep.value === "preview" && (
-        <div className={styles["message-exporter-body"]}>{preview()}</div>
-      )}
+      <Tabs defaultValue="select">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="select">{Locale.Export.Steps.Select}</TabsTrigger>
+          <TabsTrigger value="preview">
+            {Locale.Export.Steps.Preview}
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="select">
+          <Card className="border-0">
+            <CardContent>
+              <List>
+                <ListItem
+                  title={Locale.Export.Format.Title}
+                  subTitle={Locale.Export.Format.SubTitle}
+                >
+                  <Select
+                    defaultValue={exportConfig.format}
+                    onValueChange={(value) => {
+                      updateExportConfig(
+                        (config) => (config.format = value as any),
+                      );
+                    }}
+                  >
+                    <SelectTrigger className="max-w-[150px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {formats.map((f) => (
+                        <SelectItem key={f} value={f}>
+                          {f}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </ListItem>
+                <ListItem
+                  title={Locale.Export.IncludeContext.Title}
+                  subTitle={Locale.Export.IncludeContext.SubTitle}
+                >
+                  <Checkbox
+                    checked={exportConfig.includeContext}
+                    onCheckedChange={(checked) => {
+                      updateExportConfig(
+                        (config) =>
+                          (config.includeContext = Boolean(checked.valueOf())),
+                      );
+                    }}
+                  />
+                </ListItem>
+              </List>
+              <MessageSelector
+                selection={selection}
+                updateSelection={updateSelection}
+                defaultSelectAll
+              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="preview">
+          <Card className="border-0">
+            <CardContent>{preview()}</CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </>
   );
 }
