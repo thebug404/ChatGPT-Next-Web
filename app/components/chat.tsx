@@ -21,7 +21,6 @@ import BreakIcon from "../icons/break.svg";
 import DeleteIcon from "../icons/clear.svg";
 import PinIcon from "../icons/pin.svg";
 import ConfirmIcon from "../icons/confirm.svg";
-import CloseIcon from "../icons/close.svg";
 import CancelIcon from "../icons/cancel.svg";
 import ImageIcon from "../icons/image.svg";
 
@@ -109,7 +108,10 @@ import { MsEdgeTTS, OUTPUT_FORMAT } from "../utils/ms_edge_tts";
 import { Button } from "@/components/ui/button";
 import {
   ArrowLeft,
+  Check,
+  CircleX,
   Edit2,
+  LoaderCircle,
   Maximize2,
   Minimize2,
   Pencil,
@@ -1877,22 +1879,18 @@ function _Chat() {
                   )}
                   {/*@ts-ignore*/}
                   {message?.tools?.length > 0 && (
-                    <div className={styles["chat-message-tools"]}>
+                    <div className="mt-3 space-x-1">
                       {message?.tools?.map((tool) => (
-                        <div
-                          key={tool.id}
-                          title={tool?.errorMsg}
-                          className={styles["chat-message-tool"]}
-                        >
+                        <Badge key={tool.id} variant="outline">
                           {tool.isError === false ? (
-                            <ConfirmIcon />
+                            <Check size={18} />
                           ) : tool.isError === true ? (
-                            <CloseIcon />
+                            <CircleX size={18} />
                           ) : (
-                            <LoadingButtonIcon />
+                            <LoaderCircle className="animate-spin" size={18} />
                           )}
-                          <span>{tool?.function?.name}</span>
-                        </div>
+                          <span className="ms-2">{tool?.function?.name}</span>
+                        </Badge>
                       ))}
                     </div>
                   )}
