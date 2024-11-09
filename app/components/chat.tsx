@@ -13,7 +13,6 @@ import BrainIcon from "../icons/brain.svg";
 import CopyIcon from "../icons/copy.svg";
 import SpeakIcon from "../icons/speak.svg";
 import SpeakStopIcon from "../icons/speak-stop.svg";
-import LoadingIcon from "../icons/three-dots.svg";
 import LoadingButtonIcon from "../icons/loading.svg";
 import MaskIcon from "../icons/mask.svg";
 import ResetIcon from "../icons/reload.svg";
@@ -126,7 +125,7 @@ import { Textarea } from "@/components/ui/textarea";
 const ttsPlayer = createTTSPlayer();
 
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
-  loading: () => <LoadingIcon />,
+  loading: () => <LoaderCircle className="animate-spin" />,
 });
 
 export function SessionConfigModel(props: { onClose: () => void }) {
