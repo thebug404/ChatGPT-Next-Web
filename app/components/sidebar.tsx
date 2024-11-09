@@ -2,9 +2,7 @@ import React, { useEffect, useRef, useMemo, useState, Fragment } from "react";
 
 import styles from "./home.module.scss";
 
-import { IconButton } from "./button";
 import BrainyIcon from "../icons/brainy.svg";
-import DeleteIcon from "../icons/delete.svg";
 import DragIcon from "../icons/drag.svg";
 
 import Locale from "../locales";
@@ -26,7 +24,7 @@ import dynamic from "next/dynamic";
 import { showConfirm, Selector } from "./ui-lib";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Settings } from "lucide-react";
+import { Plus, Settings, X } from "lucide-react";
 
 const ChatList = dynamic(async () => (await import("./chat-list")).ChatList, {
   loading: () => null,
@@ -277,14 +275,26 @@ export function SideBar(props: { className?: string }) {
         primaryAction={
           <>
             <div className={styles["sidebar-action"] + " " + styles.mobile}>
-              <IconButton
+              {/* <IconButton
                 icon={<DeleteIcon />}
                 onClick={async () => {
                   if (await showConfirm(Locale.Home.DeleteChat)) {
                     chatStore.deleteSession(chatStore.currentSessionIndex);
                   }
                 }}
-              />
+              /> */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={async () => {
+                  if (await showConfirm(Locale.Home.DeleteChat)) {
+                    chatStore.deleteSession(chatStore.currentSessionIndex);
+                  }
+                }}
+                aria-label={Locale.Home.DeleteChat}
+              >
+                <X />
+              </Button>
             </div>
             <div className={styles["sidebar-action"]}>
               <Link to={Path.Settings}>

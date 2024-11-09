@@ -20,7 +20,7 @@ import { showConfirm } from "./ui-lib";
 import { useMobileScreen } from "../utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { XCircle } from "lucide-react";
+import { X } from "lucide-react";
 
 export function ChatItem(props: {
   onClick?: () => void;
@@ -48,7 +48,7 @@ export function ChatItem(props: {
     <Draggable draggableId={`${props.id}`} index={props.index}>
       {(provided) => (
         <Card
-          className={`border-0 hover:bg-primary-foreground my-2 ${
+          className={`border-0 group hover:bg-primary-foreground my-2 ${
             props.selected &&
             (currentPath === Path.Chat || currentPath === Path.Home) &&
             "border-l-2 dark:border-white rounded-none"
@@ -93,14 +93,14 @@ export function ChatItem(props: {
               variant="ghost"
               size="icon"
               // className={styles["chat-item-delete"]}
-              className="absolute top-0 right-0 rounded-full"
+              className="absolute top-0 right-0 rounded-full opacity-0 group-hover:opacity-100"
               onClickCapture={(e) => {
                 props.onDelete?.();
                 e.preventDefault();
                 e.stopPropagation();
               }}
             >
-              <XCircle />
+              <X />
             </Button>
           </CardContent>
         </Card>
