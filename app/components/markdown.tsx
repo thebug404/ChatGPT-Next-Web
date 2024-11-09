@@ -23,6 +23,14 @@ import { useChatStore } from "../store";
 import { IconButton } from "./button";
 
 import { useAppConfig } from "../store/config";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export function Mermaid(props: { code: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -284,6 +292,12 @@ function _MarkDownContent(props: { content: string }) {
           const target = isInternal ? "_self" : aProps.target ?? "_blank";
           return <a {...aProps} target={target} />;
         },
+        table: ({ children }) => <Table>{children}</Table>,
+        thead: ({ children }) => <TableHeader>{children}</TableHeader>,
+        tbody: ({ children }) => <TableBody>{children}</TableBody>,
+        tr: ({ children }) => <TableRow>{children}</TableRow>,
+        th: ({ children }) => <TableHead>{children}</TableHead>,
+        td: ({ children }) => <TableCell>{children}</TableCell>,
       }}
     >
       {escapedContent}
