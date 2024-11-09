@@ -22,10 +22,8 @@ import {
 import CopyIcon from "../icons/copy.svg";
 import LoadingIcon from "../icons/three-dots.svg";
 import ChatGptIcon from "../icons/chatgpt.png";
-import ShareIcon from "../icons/share.svg";
 import BotIcon from "../icons/bot.png";
 
-import DownloadIcon from "../icons/download.svg";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MessageSelector, useMessageSelector } from "./message-selector";
 import { Avatar } from "./emoji";
@@ -50,6 +48,8 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Copy, Download } from "lucide-react";
 
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
   loading: () => <LoadingIcon />,
@@ -310,28 +310,22 @@ export function PreviewActions(props: {
     <>
       <div className={styles["preview-actions"]}>
         {props.showCopy && (
-          <IconButton
-            text={Locale.Export.Copy}
-            bordered
-            shadow
-            icon={<CopyIcon />}
-            onClick={props.copy}
-          ></IconButton>
+          <Button variant="ghost" onClick={props.copy}>
+            <Copy />
+            {Locale.Export.Copy}
+          </Button>
         )}
-        <IconButton
-          text={Locale.Export.Download}
-          bordered
-          shadow
-          icon={<DownloadIcon />}
-          onClick={props.download}
-        ></IconButton>
-        <IconButton
+        <Button variant="ghost" onClick={props.download}>
+          <Download />
+          {Locale.Export.Download}
+        </Button>
+        {/* <IconButton
           text={Locale.Export.Share}
           bordered
           shadow
           icon={loading ? <LoadingIcon /> : <ShareIcon />}
           onClick={share}
-        ></IconButton>
+        ></IconButton> */}
       </div>
       <div
         style={{

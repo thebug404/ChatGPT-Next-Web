@@ -106,10 +106,10 @@
     border-radius: 10px;
     padding: 20px;
     box-shadow: var(--card-shadow) inset;
-    background-color: var(--gray);
+    background-color: hsl(var(--card));
 
     .chat-info {
-      background-color: var(--second);
+      background-color: hsl(var(--muted));
       padding: 20px;
       border-radius: 10px;
       margin-bottom: 20px;
@@ -248,7 +248,7 @@
 
       &-assistant {
         .body {
-          background-color: var(--white);
+          background-color: hsl(var(--muted));
         }
       }
 
@@ -260,7 +260,7 @@
         }
 
         .body {
-          background-color: var(--second);
+          background-color: hsl(var(--card));
           margin-right: 10px;
         }
       }
